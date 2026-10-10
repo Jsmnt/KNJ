@@ -13,8 +13,16 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable}`}>
-      <body className="font-sans antialiased">{children}</body>
+    // suppressHydrationWarning: browser extensions (e.g. Weava, Grammarly) add attributes
+    // to <html> and <body>; this stops React from complaining about those two tags only.
+    <html
+      lang="en"
+      className={`${display.variable} ${sans.variable} ${mono.variable}`}
+      suppressHydrationWarning
+    >
+      <body className="font-sans antialiased" suppressHydrationWarning>
+        {children}
+      </body>
     </html>
   );
 }

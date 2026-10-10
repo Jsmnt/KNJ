@@ -3,18 +3,22 @@
 import { useState } from "react";
 
 type Props = {
-  // Returns an error message to show, or null if the link was accepted.
-  onSubmit: (url: string, name: string) => string | null;
+  // Resolves to an error message to show, or null if the link was accepted.
+  onSubmit: (url: string, name: string) => Promise<string | null>;
 };
 
 export default function SubmitForm({ onSubmit }: Props) {
   const [url, setUrl] = useState("");
   const [name, setName] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [sending, setSending] = useState(false);
 
-  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const problem = onSubmit(url, name);
+    if (sending) return;
+    setSending(true);
+    const problem = await onSubmit(url, name);
+    setSending(false);
     if (problem) {
       setError(problem);
       return;
@@ -51,9 +55,10 @@ export default function SubmitForm({ onSubmit }: Props) {
         />
         <button
           type="submit"
-          className="h-14 flex-[1_1_160px] cursor-pointer rounded-xl bg-accent px-6 text-[17px] font-semibold text-white hover:bg-accent/90"
+          disabled={sending}
+          className="h-14 flex-[1_1_160px] cursor-pointer rounded-xl bg-accent px-6 text-[17px] font-semibold text-white hover:bg-accent/90 disabled:cursor-wait disabled:opacity-70"
         >
-          Join the queue
+          {sending ? "Adding…" : "Join the queue"}
         </button>
       </div>
 
