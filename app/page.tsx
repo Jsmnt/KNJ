@@ -1,13 +1,18 @@
+import Header from "@/components/Header";
+import QueueApp from "@/components/QueueApp";
+import Rules from "@/components/Rules";
+import Footer from "@/components/Footer";
+import { sampleItems } from "@/lib/sample-data";
+
 export default function Home() {
   return (
-    <main className="mx-auto max-w-5xl px-6 py-24">
-      <p className="font-mono text-sm uppercase tracking-widest text-muted">
-        Website review queue
-      </p>
-      <h1 className="mt-3 font-display text-6xl font-bold tracking-tight">
-        Paste your link. Get in line.
-      </h1>
-      <p className="mt-5 text-lg text-muted">KNJ is under construction.</p>
-    </main>
+    <>
+      <Header />
+      <main>
+        <QueueApp initialItems={sampleItems} />
+        <Rules />
+      </main>
+      <Footer />
+    </>
   );
 }
